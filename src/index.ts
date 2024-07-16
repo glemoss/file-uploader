@@ -17,6 +17,16 @@ app.post('/upload', upload.single('file'), (req, res) => {
     return res.json(req.file?.filename);
 });
 
+app.post('/upload', upload.single('file'), (req, res) => {
+    try {
+        const filename = req.file?.filename; // Usando opcional chaining para evitar erros se 'file' não existir
+        return res.status(200).json({ filename }); // Correção: use 'res.status().json()' em vez de 'res.statusCode = 200; return res.json();'
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: 'Erro ao processar o nome do arquivo.' });
+    }
+});
+
 app.listen(PORT, HOST, () => {
     console.log(`Running on http://${HOST}:${PORT}`);
 });
